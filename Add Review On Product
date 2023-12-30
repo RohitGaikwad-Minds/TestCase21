@@ -1,0 +1,75 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AddReviewTest {
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver.exe");
+
+        // Instantiate ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the website
+        driver.get("https://automationexercise.com/");
+
+        // Locate the search input box and enter the desired search keyword
+        WebElement searchInput = driver.findElement(By.id("woocommerce-product-search-field-0"));
+        searchInput.sendKeys("Product Name");
+
+        // Submit the search form
+        searchInput.submit();
+
+        // Verify that the search results page is displayed
+        String expectedTitle = "Search Results";
+        String actualTitle = driver.getTitle();
+
+        if (actualTitle.equals(expectedTitle)) {
+            System.out.println("Successfully displayed search results page.");
+        } else {
+            System.out.println("Failed to display search results page.");
+        }
+
+        // Optionally, retrieve the list of products on the search results page
+        // List<WebElement> productList = driver.findElements(By.xpath("//div[@class='product-item']"));
+
+        // Perform any necessary actions on the products
+
+        // Optionally, click on a product to view its details
+
+        // Locate the "Reviews" tab or link and click it
+        WebElement reviewsTab = driver.findElement(By.xpath("//a[@href='#tab-reviews']"));
+        reviewsTab.click();
+
+        // Locate the "Add a review" button or link and click it
+        WebElement addReviewButton = driver.findElement(By.linkText("Add a review"));
+        addReviewButton.click();
+
+        // Enter the review details
+        WebElement reviewTitleInput = driver.findElement(By.id("comment_title"));
+        WebElement reviewDescriptionInput = driver.findElement(By.id("comment_description"));
+
+        reviewTitleInput.sendKeys("Great product!");
+        reviewDescriptionInput.sendKeys("I really love this product. It works perfectly!");
+
+        // Optionally, select a rating for the review
+        WebElement ratingElement = driver.findElement(By.xpath("//span[@class='star-rating'][@title='5 out of 5']"));
+        ratingElement.click();
+
+        // Submit the review form
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        submitButton.click();
+
+        // Verify that the review has been added successfully
+        WebElement successMessage = driver.findElement(By.xpath("//div[@class='woocommerce-message']"));
+        if (successMessage.getText().contains("Review has been added successfully")) {
+            System.out.println("Review has been added successfully.");
+        } else {
+            System.out.println("Failed to add the review.");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
